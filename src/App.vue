@@ -19,7 +19,10 @@
       <span class="todo__id bg-orange-300  text-center px-2  rounded-xl"  >{{ todo.id }}</span>
   
       <span    class="todo__text " :class="{todo__text_isDone:isDone}" >{{ todo.text }}</span>
+      <div>
+        <input  type="checkbox" class="inline-block todo-check" v-model="isDone">
       <button @click="deleteTodo(todo.id)" class="bg-red-400 px-2 text-white rounded">delete</button>
+      </div>
     </div>
  
 
@@ -73,6 +76,15 @@ let del = this.todos.filter((e)=>{
 }
 </script>
 <style lang="scss">
+.todo{
+  border: 2px solid gray;
+  &__text{
+ &_isDone{
+  text-decoration: line-through;
+ }
+  }
+
+}
 
 
 </style>
