@@ -19,7 +19,7 @@
       <span class="todo__id bg-orange-300  text-center px-2  rounded-xl"  >{{ todo.id }}</span>
   
       <span    class="todo__text " :class="{todo__text_isDone:isDone}" >{{ todo.text }}</span>
-      
+      <button @click="deleteTodo(todo.id)" class="bg-red-400 px-2 text-white rounded">delete</button>
     </div>
  
 
@@ -58,6 +58,14 @@ export default {
       }
    
     },
+    //delete
+    deleteTodo(id){
+      console.log(id);
+let del = this.todos.filter((e)=>{
+  console.log(e.id);
+  return e.id != id
+}) 
+   this.todos.pop(del)   },
     
  
     
