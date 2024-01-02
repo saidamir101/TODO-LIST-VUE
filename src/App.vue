@@ -5,23 +5,26 @@
 <template>
   
   <div>
-<div><p class="text-center text-4xl mt-4 font-bold font-mono">{{ title }}</p></div>
+<div><p class="text-center text-4xl mt-4 font-bold text-[blue] font-mono">{{ title }}</p></div>
 
 <div class="">
+  <div class="flex justify-center mt-5">
+      <input type="number" placeholder="Search by ID" v-model="searchId" class="w-40 px-3 py-2 rounded-md border border-gray-400">
+    </div>
   <div class="justify-center  mt-10 flex gap-5">
-  <input type="" v-model="text" placeholder="I can do" class="outline-none w-[420px] h-[40px] rounded-lg px-3 border border-green-500 ">
-  <button @click="addTodo(id++)" class="bg-green-400 w-[100px] text-white h-[40px] rounded-lg" >Add</button>
+  <input type="" v-model="text" placeholder="I can do" class="outline-none w-[420px] h-[40px] rounded-lg px-3 border border-black ">
+  <button @click="addTodo(id++)" class="bg-[black] w-[100px] text-white h-[40px] rounded-lg" >Add</button>
 </div>
-  <div class="bg-gray-100  border-red-400 border rounded-lg px-2 w-[35%]  mt-2 mx-auto  " v-for="(todo,) in todos" :key="todo.id">
+  <div class="bg-gray-100  border-[green] border rounded-lg px-2 w-[35%]  mt-2 mx-auto  " v-for="todo in this.filteredTodos" :key="todo.id">
     <div class="flex justify-center items-center p-2 gap-10 ">  
-      <span class="todo__id bg-orange-300  text-center px-2  rounded-xl"  >{{ todo.id }}</span>
+      <span class="todo__id bg-[red]  text-white text-center px-2  rounded-xl"  >{{ todo.id }}</span>
   
       <span  v-if="!editting"  class="todo__text " :class="{todo__text_isDone:isDone}" >{{ todo.text }}</span>
       <input v-bind:value="editText" @change="editTextChange" v-else type="text">
       <div  class="flex items-center gap-2">
       <input type="checkbox" class="inline-block todo_check" v-model="isDone" >
-      <button @click="deleteTodo(todo.id)" class="bg-red-400 px-2 text-white rounded">delete</button>
-      <button @click="editTodo(todo)" class="bg-purple-400 px-2 text-white rounded">{{editting?"update":"edit"}}</button>
+      <button @click="deleteTodo(todo.id)" class="bg-[green] px-2 text-white rounded">delete</button>
+      <button @click="editTodo(todo)" class="bg-[red] px-2 text-white rounded">{{editting?"update":"edit"}}</button>
     </div>
     </div>
  
@@ -42,8 +45,18 @@ export default {
       isDone:false,
       id:0,
       editting:false,
-      editText:""
+      editText:"",
+      searchId: null
     }
+  },
+  computed: {
+    filteredTodos() {
+      if (!this.searchId) {
+        return this.todos;
+      }
+
+      return this.todos.filter((todo) => todo.id === this.searchId);
+    },
   },
   methods:{
     ...mapActions(["deleteTodo","editTodo"]),
@@ -60,6 +73,13 @@ export default {
       this.text=""
       }
    
+    },
+    filteredTodos() {
+      if (!this.searchId) {
+        return this.todos;
+      }
+
+      return this.todos.filter((todo) => todo.id === parseInt(this.searchId));
     },
     //delete
     deleteTodo(id){
