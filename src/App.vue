@@ -1,5 +1,3 @@
-
-
 <script setup>
 
 </script>
@@ -18,11 +16,13 @@
     <div class="flex justify-center items-center p-2 gap-10 ">  
       <span class="todo__id bg-orange-300  text-center px-2  rounded-xl"  >{{ todo.id }}</span>
   
-      <span    class="todo__text " :class="{todo__text_isDone:isDone}" >{{ todo.text }}</span>
-      <div>
-        <input  type="checkbox" class="inline-block todo-check" v-model="isDone">
+      <span  v-if="!editting"  class="todo__text " :class="{todo__text_isDone:isDone}" >{{ todo.text }}</span>
+      <input v-bind:value="editText" @change="editTextChange" v-else type="text">
+      <div  class="flex items-center gap-2">
+      <input type="checkbox" class="inline-block todo_check" v-model="isDone" >
       <button @click="deleteTodo(todo.id)" class="bg-red-400 px-2 text-white rounded">delete</button>
-      </div>
+      <button @click="editTodo(todo)" class="bg-purple-400 px-2 text-white rounded">{{editting?"update":"edit"}}</button>
+    </div>
     </div>
  
 
@@ -69,7 +69,22 @@ let del = this.todos.filter((e)=>{
   return e.id != id
 }) 
    this.todos.pop(del)   },
-    
+   //edit
+   editTextChange(e){
+    this.editText= e.target.value
+   },
+   editTodo(todo){
+this.editting = this.editting == true ? false:true
+if(this.editting){
+  this.editText = todo.text
+  let index = this.todos.findIndex((e)=>e.id == todo.id)
+
+}
+else{
+  todo.text = this.editText
+}
+
+   }
  
     
   }
@@ -86,6 +101,4 @@ let del = this.todos.filter((e)=>{
 
 }
 
-
 </style>
-
